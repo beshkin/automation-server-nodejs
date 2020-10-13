@@ -35,11 +35,6 @@ app.post('/', (req, res) => {
     });
 
     device.on('data', data => {
-        console.log('Data from device:', data);
-
-        console.log(`Boolean status of default property: ${data.dps['1']}.`);
-
-        // Set default property to opposite
         if (!stateHasChanged) {
             if (action) {
                 device.set({set: action === 'on'});
