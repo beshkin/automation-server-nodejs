@@ -18,8 +18,8 @@ app.post('/power', (req, res) => {
         let status = await device.get();
 
         if (action) {
-            await device.set({set: action === 'on'});
-            status = await device.get();
+            const deviceInfo = await device.set({set: action === 'on'});
+            status = deviceInfo.dps[1];
         }
 
         device.disconnect();
