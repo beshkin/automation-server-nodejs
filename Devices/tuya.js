@@ -2,7 +2,7 @@ const express = require('express')
 let app = express.Router()
 const TuyAPI = require('tuyapi');
 
-app.post('/', (req, res) => {
+app.post('/power', (req, res) => {
     const {deviceId, key, action, ip} = req.body;
 
     const device = new TuyAPI({
