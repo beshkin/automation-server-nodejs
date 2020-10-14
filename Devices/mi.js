@@ -32,32 +32,11 @@ app.post('/brightness', (req, res) => {
         }
         reportWeb(res, device, status, deviceBrightness)
     })();
-
-    // miio.device({address: ip, token: key})
-    //     .then(device => {
-    //         console.log('Connected to', device)
-    //         device.power().then(isOn => {
-    //             if (brightness) {
-    //                 device.setBrightness(brightness)
-    //                     .then(brightness => {
-    //                         reportWeb(res, device, isOn, brightness)
-    //                     })
-    //                     .catch(err => console.log('Error: ', err));
-    //             } else {
-    //                 device.brightness()
-    //                     .then(brightness => {
-    //                         reportWeb(res, device, isOn, brightness)
-    //                     })
-    //             }
-    //         }).catch(err => console.log('Error: ', err))
-    //     })
-    //     .catch(err => console.log('Error: ', err));
 })
 
 function reportWeb(res, device, deviceStatus = false, brightness = 0) {
-    res.send({'success': true, 'device': {'status': deviceStatus, 'brightness': brightness}});
-
     device.destroy();
+    res.send({'success': true, 'device': {'status': deviceStatus, 'brightness': brightness}});
 }
 
 module.exports = app

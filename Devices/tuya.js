@@ -22,8 +22,8 @@ app.post('/power', (req, res) => {
             status = await device.get();
         }
 
-        res.send({'success': true, 'device': {'status': status}});
         device.disconnect();
+        res.send({'success': true, 'device': {'status': status}});
     })();
 })
 module.exports = app
