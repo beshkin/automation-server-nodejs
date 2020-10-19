@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./index.js localhost 3080"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +17,7 @@
     "tuyapi": "github:codetheweb/tuyapi"
   },
   "devDependencies": {
-    "eslint": "^7.10.0"
+    "eslint": "^7.10.0",
+    "nodemon": "^2.0.5"
   }
 }

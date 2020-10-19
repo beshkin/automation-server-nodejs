@@ -34,6 +34,19 @@ app.post('/brightness', (req, res) => {
     })();
 })
 
+app.post("/discover", (req, res) => {
+    const browser = miio.browse({
+        cacheTime: 300 // 5 minutes. Default is 1800 seconds (30 minutes)
+    });
+
+    const devices = {};
+    browser.on('available', reg => {
+        devices[reg.id] = reg
+    });
+    setTimeout(() => { res.send({'success': true, 'devices': devices}); }, 2000);
+
+})
+
 function reportWeb(res, device, deviceStatus = false, brightness = 0) {
     device.destroy();
     res.send({'success': true, 'device': {'status': deviceStatus, 'brightness': brightness}});

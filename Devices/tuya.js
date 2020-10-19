@@ -26,4 +26,8 @@ app.post('/power', (req, res) => {
         res.send({'success': true, 'device': {'status': status}});
     })();
 })
+
+app.post("/discover",(req, res) => {
+
+})
 module.exports = app
