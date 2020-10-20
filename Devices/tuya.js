@@ -3,13 +3,13 @@ let app = express.Router()
 const TuyAPI = require('tuyapi');
 
 app.post('/power', (req, res) => {
-    const {deviceId, key, action, ip} = req.body;
+    const {deviceId, key, action, ip, version} = req.body;
 
     const device = new TuyAPI({
         id: deviceId,
         key: key,
         ip: ip,
-        version: 3.3
+        version: version || "3.1"
     });
 
     (async () => {
@@ -27,7 +27,7 @@ app.post('/power', (req, res) => {
     })();
 })
 
-app.post("/discover",(req, res) => {
+app.post("/discover", (req, res) => {
 
 })
 module.exports = app
