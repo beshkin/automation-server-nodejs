@@ -27,7 +27,35 @@ app.post('/power', (req, res) => {
     })();
 })
 
-app.post("/discover", (req, res) => {
+app.post("/info", (req, res) => {
+    const {deviceId, key} = req.body;
 
+    const device = new TuyAPI({
+        id: deviceId,
+        key: key,
+    });
+
+    (async () => {
+        await device.find({timeout:20, all: false});
+        const deviceFound = device.device;
+
+        res.send({'success': true, 'device': deviceFound});
+    })();
 })
+
+app.post("/discover", (req, res) => {
+    const {deviceId, key} = req.body;
+
+    const device = new TuyAPI({
+        id: deviceId,
+        key: key,
+    });
+
+    (async () => {
+        await device.find({timeout:20, all: true});
+
+        res.send({'success': true, 'devices': device.foundDevices});
+    })();
+})
+
 module.exports = app
