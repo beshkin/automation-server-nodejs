@@ -7,12 +7,13 @@ async function getDevices() {
 
     const devices = [];
     browser.on('available', reg => {
-        devices[reg.id] = reg
+        devices.push({id: reg.id.toString(), ip: reg.address})
     });
 
     await new Promise((resolve) => {
         setTimeout(resolve, 2000);
     });
+
     return devices;
 }
 

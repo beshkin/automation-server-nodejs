@@ -40,11 +40,11 @@ app.post("/info", (req, res) => {
     (async () => {
         const devices = await helper.getDevices();
 
-        let device = devices.map(((value) => {
+        let device = {}
+        devices.map(((value) => {
             if (value.id === deviceId) {
-                return value;
+                device = value;
             }
-            return {}
         }))
 
         res.send({'success': true, 'device': device});
@@ -53,8 +53,8 @@ app.post("/info", (req, res) => {
 
 app.post("/discover", (req, res) => {
     (async () => {
-        const devices = await helper.getDevices();
-        res.send({'success': true, 'devices': devices});
+        const foundDevices = await helper.getDevices();
+        res.send({'success': true, 'devices': foundDevices});
     })();
 })
 
