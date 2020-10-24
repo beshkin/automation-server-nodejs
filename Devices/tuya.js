@@ -36,8 +36,13 @@ app.post("/info", (req, res) => {
     });
 
     (async () => {
-        await device.find({timeout:20, all: false});
-        const deviceFound = device.device;
+        await device.find({timeout: 20, all: false});
+        const deviceFound = {
+            id: device.device.gwID,
+            ip: device.device.ip,
+            key: device.device.key,
+            version: device.device.version,
+        };
 
         res.send({'success': true, 'device': deviceFound});
     })();
@@ -52,7 +57,7 @@ app.post("/discover", (req, res) => {
     });
 
     (async () => {
-        await device.find({timeout:20, all: true});
+        await device.find({timeout: 20, all: true});
 
         res.send({'success': true, 'devices': device.foundDevices});
     })();
