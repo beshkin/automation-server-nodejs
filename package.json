@@ -6,12 +6,14 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./index.js localhost 3080"
+    "dev": "nodemon ./index.js localhost 3080",
+    "dev-udp": "nodemon ./udpServer.js localhost 3080"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "dgram": "^1.0.1",
     "express": "^4.17.1",
     "miio": "^0.15.6",
     "tuyapi": "github:codetheweb/tuyapi"

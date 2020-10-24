@@ -1,6 +1,7 @@
 const express = require('express')
 let app = express.Router()
 const miio = require('miio')
+const helper = require('./mi/Helper')
 
 app.post('/power', (req, res) => {
     const {key, action, ip} = req.body;
@@ -34,18 +35,29 @@ app.post('/brightness', (req, res) => {
     })();
 })
 
-app.post("/discover", (req, res) => {
-    const browser = miio.browse({
-        cacheTime: 300 // 5 minutes. Default is 1800 seconds (30 minutes)
-    });
+app.post("/info", (req, res) => {
+    const {deviceId, key} = req.body;
+    (async () => {
+        const devices = await helper.getDevices();
 
-    const devices = {};
-    browser.on('available', reg => {
-        devices[reg.id] = reg
-    });
-    setTimeout(() => { res.send({'success': true, 'devices': devices}); }, 2000);
+        let device = {}
+        devices.map(((value) => {
+            if (value.id === deviceId) {
+                device = value;
+            }
+        }))
 
+        res.send({'success': true, 'device': device});
+    })();
 })
+
+app.post("/discover", (req, res) => {
+    (async () => {
+        const foundDevices = await helper.getDevices();
+        res.send({'success': true, 'devices': foundDevices});
+    })();
+})
+
 
 function reportWeb(res, device, deviceStatus = false, brightness = 0) {
     device.destroy();
