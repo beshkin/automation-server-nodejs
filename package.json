@@ -15,7 +15,9 @@
     "body-parser": "^1.19.0",
     "dgram": "^1.0.1",
     "express": "^4.17.1",
+    "lumi-aqara": "^1.11.1",
     "miio": "^0.15.6",
+    "node-xiaomi-smart-home": "^1.5.1",
     "tuyapi": "github:codetheweb/tuyapi"
   },
   "devDependencies": {

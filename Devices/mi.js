@@ -7,7 +7,11 @@ app.post('/power', (req, res) => {
     const {key, action, ip} = req.body;
 
     (async () => {
-        const device = await miio.device({address: ip, token: key});
+        const config = {address: ip};
+        if (key) {
+            config.token = key;
+        }
+        const device = await miio.device(config);
         let status = await device.power();
         if (action) {
             await device.power(action === 'on');
