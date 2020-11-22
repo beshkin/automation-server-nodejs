@@ -13,16 +13,21 @@ app.post('/power', (req, res) => {
         const options = {country};
 
         let deviceStatus = false
-        if (action) {
-            try {
+
+        try {
+            if (action) {
                 const response = await mihome.miCloudProtocol.miioCall(deviceId, 'set_power', withLightEffect(action), options);
                 if (response[0] === 'ok') {
                     deviceStatus = action === 'on';
                 }
-            } catch (e) {
-                console.log(e)
+            } else {
+                const response = await mihome.miCloudProtocol.miioCall(deviceId, 'get_prop', ['power'], options);
+                deviceStatus = response[0] === 'on';
             }
+        } catch (e) {
+            console.log(e)
         }
+
 
         await mihome.miCloudProtocol.logout()
         reportWeb(res, deviceStatus)
@@ -38,9 +43,14 @@ app.post('/brightness', (req, res) => {
         const options = {country};
 
         try {
-            const response = await mihome.miCloudProtocol.miioCall(deviceId, 'set_bright', [parseInt(brightness)], options);
-            if (response[0] !== 'ok') {
-                brightness = 0;
+            if (brightness) {
+                const response = await mihome.miCloudProtocol.miioCall(deviceId, 'set_bright', [parseInt(brightness)], options);
+                if (response[0] !== 'ok') {
+                    brightness = 0;
+                }
+            } else {
+                const response = await mihome.miCloudProtocol.miioCall(deviceId, 'get_prop', ['bright'], options);
+                brightness = response[0];
             }
         } catch (e) {
             console.log(e)
