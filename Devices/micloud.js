@@ -21,8 +21,9 @@ app.post('/power', (req, res) => {
                     deviceStatus = action === 'on';
                 }
             } else {
+                // works only with CN server
                 const response = await mihome.miCloudProtocol.miioCall(deviceId, 'get_prop', ['power'], options);
-                deviceStatus = response[0] === 'on';
+                deviceStatus = response !== undefined ? response[0] === 'on' : false;
             }
         } catch (e) {
             console.log(e)
@@ -49,8 +50,9 @@ app.post('/brightness', (req, res) => {
                     brightness = 0;
                 }
             } else {
+                // works only with CN server
                 const response = await mihome.miCloudProtocol.miioCall(deviceId, 'get_prop', ['bright'], options);
-                brightness = response[0];
+                brightness = response[0] || 0;
             }
         } catch (e) {
             console.log(e)
