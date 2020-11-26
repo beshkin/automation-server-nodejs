@@ -90,3 +90,7 @@ $ curl --header "Content-Type: application/json" \
   --data '{"key":"DEVICE_KEY","ip":"DEVICE_IP"}' \ 
   http://localhost:8001/switch/mi/brightness
 ```
+
+## Documentation
+### Mi cloud light
+https://www.yeelight.com/download/Yeelight_Inter-Operation_Spec.pdf
