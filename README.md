@@ -4,7 +4,7 @@ This is a simple node.js server, which allows managing TUYA devices via POST req
 ## Installation
 Obtain the project
 ```shell script
-$ git pull https://github.com/beshkin/automation-server-nodejs.git
+$ git clone https://github.com/beshkin/automation-server-nodejs.git
 ```
 Install dependences
 ```shell script
@@ -14,6 +14,9 @@ Start server
 ```shell script
 $ npm run start
 ```
+
+**Note**: You need npm 14.x+
+
 If you want to run the server as a service, I suggest using ``pm2``
 Install PM2
 

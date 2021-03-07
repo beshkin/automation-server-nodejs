@@ -9,28 +9,32 @@ app.post('/power', (req, res) => {
     const {deviceId, country, username, password, action} = req.body;
 
     (async () => {
-        await mihome.miCloudProtocol.login(username, password);
-        const options = {country};
-
         let deviceStatus = false
 
-        try {
-            if (action) {
-                const response = await mihome.miCloudProtocol.miioCall(deviceId, 'set_power', withLightEffect(action), options);
-                if (response[0] === 'ok') {
-                    deviceStatus = action === 'on';
-                }
-            } else {
-                // works only with CN server
-                const response = await mihome.miCloudProtocol.miioCall(deviceId, 'get_prop', ['power'], options);
-                deviceStatus = response !== undefined ? response[0] === 'on' : false;
+        await mihome.miCloudProtocol.login(username, password).catch((e) => {
+            reportErrorWeb(res, e)
+        });
+        const options = {country};
+
+        if (action) {
+            const response = await mihome.miCloudProtocol.miioCall(deviceId, 'set_power', withLightEffect(action), options).catch((e) => {
+                reportErrorWeb(res, e)
+            });
+            if (response[0] === 'ok') {
+                deviceStatus = action === 'on';
             }
-        } catch (e) {
-            console.log(e)
+        } else {
+            // works only with CN server
+            const response = await mihome.miCloudProtocol.miioCall(deviceId, 'get_prop', ['power'], options).catch((e) => {
+                reportErrorWeb(res, e)
+            });
+            deviceStatus = response !== undefined ? response[0] === 'on' : false;
         }
 
+        await mihome.miCloudProtocol.logout().catch((e) => {
+            reportErrorWeb(res, e)
+        })
 
-        await mihome.miCloudProtocol.logout()
         reportWeb(res, deviceStatus)
     })();
 })
@@ -40,25 +44,29 @@ app.post('/brightness', (req, res) => {
     let {deviceId, country, username, password, brightness} = req.body;
     (async () => {
 
-        await mihome.miCloudProtocol.login(username, password);
+        await mihome.miCloudProtocol.login(username, password).catch((e) => {
+            reportErrorWeb(res, e)
+        });
         const options = {country};
 
-        try {
-            if (brightness) {
-                const response = await mihome.miCloudProtocol.miioCall(deviceId, 'set_bright', [parseInt(brightness)], options);
-                if (response[0] !== 'ok') {
-                    brightness = 0;
-                }
-            } else {
-                // works only with CN server
-                const response = await mihome.miCloudProtocol.miioCall(deviceId, 'get_prop', ['bright'], options);
-                brightness = response[0] || 0;
+        if (brightness) {
+            const response = await mihome.miCloudProtocol.miioCall(deviceId, 'set_bright', [parseInt(brightness)], options).catch((e) => {
+                reportErrorWeb(res, e)
+            });
+            if (response[0] !== 'ok') {
+                brightness = 0;
             }
-        } catch (e) {
-            console.log(e)
+        } else {
+            // works only with CN server
+            const response = await mihome.miCloudProtocol.miioCall(deviceId, 'get_prop', ['bright'], options).catch((e) => {
+                reportErrorWeb(res, e)
+            });
+            brightness = response[0] || 0;
         }
 
-        await mihome.miCloudProtocol.logout()
+        await mihome.miCloudProtocol.logout().catch((e) => {
+            reportErrorWeb(res, e)
+        })
         reportWeb(res, true, brightness)
     })();
 })
@@ -68,22 +76,34 @@ app.post("/discover", (req, res) => {
 
     let devices = [];
     (async () => {
-        await mihome.miCloudProtocol.login(username, password);
+        await mihome.miCloudProtocol.login(username, password).catch((e) => {
+            reportErrorWeb(res, e)
+        });
         const options = {country};
 
         if (deviceId) {
-            devices.push(await mihome.miCloudProtocol.getDevice(deviceId, options))
+            devices.push(await mihome.miCloudProtocol.getDevice(deviceId, options)).catch((e) => {
+                reportErrorWeb(res, e)
+            })
         } else {
-            devices = await mihome.miCloudProtocol.getDevices(null, options)
+            devices = await mihome.miCloudProtocol.getDevices(null, options).catch((e) => {
+                reportErrorWeb(res, e)
+            })
         }
 
-        await mihome.miCloudProtocol.logout()
+        await mihome.miCloudProtocol.logout().catch((e) => {
+            reportErrorWeb(res, e)
+        })
         res.send({'success': true, 'devices': devices});
     })();
 })
 
 function reportWeb(res, deviceStatus = false, brightness = 0) {
     res.send({'success': true, 'device': {'status': deviceStatus, 'brightness': brightness}});
+}
+
+function reportErrorWeb(res, message) {
+    res.send({'success': false, 'message': message});
 }
 
 module.exports = app
