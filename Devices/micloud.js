@@ -31,9 +31,7 @@ app.post('/power', (req, res) => {
             deviceStatus = response !== undefined ? response[0] === 'on' : false;
         }
 
-        await mihome.miCloudProtocol.logout().catch((e) => {
-            reportErrorWeb(res, e)
-        })
+        await mihome.miCloudProtocol.logout()
 
         reportWeb(res, deviceStatus)
     })();
@@ -64,9 +62,7 @@ app.post('/brightness', (req, res) => {
             brightness = response[0] || 0;
         }
 
-        await mihome.miCloudProtocol.logout().catch((e) => {
-            reportErrorWeb(res, e)
-        })
+        await mihome.miCloudProtocol.logout()
         reportWeb(res, true, brightness)
     })();
 })
@@ -82,18 +78,12 @@ app.post("/discover", (req, res) => {
         const options = {country};
 
         if (deviceId) {
-            devices.push(await mihome.miCloudProtocol.getDevice(deviceId, options)).catch((e) => {
-                reportErrorWeb(res, e)
-            })
+            devices.push(await mihome.miCloudProtocol.getDevice(deviceId, options))
         } else {
-            devices = await mihome.miCloudProtocol.getDevices(null, options).catch((e) => {
-                reportErrorWeb(res, e)
-            })
+            devices = await mihome.miCloudProtocol.getDevices(null, options)
         }
 
-        await mihome.miCloudProtocol.logout().catch((e) => {
-            reportErrorWeb(res, e)
-        })
+        await mihome.miCloudProtocol.logout()
         res.send({'success': true, 'devices': devices});
     })();
 })
