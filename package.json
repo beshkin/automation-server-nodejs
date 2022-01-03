@@ -12,17 +12,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.19.1",
     "dgram": "^1.0.1",
-    "express": "^4.17.1",
+    "express": "^4.17.2",
     "lumi-aqara": "^1.11.1",
     "miio": "^0.15.6",
-    "node-mihome": "0.0.27",
+    "node-mihome": "0.0.32",
     "node-xiaomi-smart-home": "^1.5.1",
     "tuyapi": "github:codetheweb/tuyapi"
   },
   "devDependencies": {
-    "eslint": "^7.13.0",
-    "nodemon": "^2.0.6"
+    "eslint": "^8.6.0",
+    "nodemon": "^2.0.15"
   }
 }
