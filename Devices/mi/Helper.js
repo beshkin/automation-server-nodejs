@@ -2,7 +2,7 @@ const miio = require('miio')
 
 async function getDevices() {
     const browser = miio.devices({
-        cacheTime: 1 // 5 minutes. Default is 1800 seconds (30 minutes)
+        cacheTime: 300 // 5 minutes. Default is 1800 seconds (30 minutes)
     });
 
     const devices = [];
